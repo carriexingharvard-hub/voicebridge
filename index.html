@@ -44,6 +44,332 @@
             },
         }
     </script>
+
+    <!-- ============================================================
+         VOICEBRIDGE CONFIGURATION
+         Data structures for levels, scenarios, and journey steps
+         ============================================================ -->
+    <script>
+        /**
+         * @typedef {'office_hours' | 'class_discussion' | 'presentation' | 'social_interaction'} ScenarioCategory
+         * @typedef {1 | 2 | 3 | 4} LevelId
+         */
+
+        /**
+         * VoiceBridge Configuration Object
+         * Contains all content data for the platform
+         */
+        const VoiceBridgeConfig = {
+            
+            // ==================== LEVEL DEFINITIONS ====================
+            /** @type {Array<{id: LevelId, name: string, summary: string, focusAreas: string[], unlockCondition: string}>} */
+            levels: [
+                {
+                    id: 1,
+                    name: "Getting Comfortable",
+                    summary: "Build confidence with short responses and familiar topics. Lots of support and encouragement as you find your voice.",
+                    focusAreas: [
+                        "Short, simple responses (15-30 seconds)",
+                        "Familiar everyday topics",
+                        "Basic self-introduction",
+                        "Simple opinions with one reason"
+                    ],
+                    unlockCondition: "Available from the start — everyone begins here."
+                },
+                {
+                    id: 2,
+                    name: "Expressing Ideas",
+                    summary: "Practice sharing opinions and explaining your thinking more clearly. Responses get longer and topics more varied.",
+                    focusAreas: [
+                        "Longer responses (45-60 seconds)",
+                        "Sharing and supporting opinions",
+                        "Basic argumentation structure",
+                        "Responding to simple follow-up questions"
+                    ],
+                    unlockCondition: "Complete 5 Level 1 scenarios with confidence rating ≥3/5."
+                },
+                {
+                    id: 3,
+                    name: "Academic Talk",
+                    summary: "Engage with complex topics using academic vocabulary and structured arguments. Practice the discourse patterns used in college.",
+                    focusAreas: [
+                        "Extended responses (90-120 seconds)",
+                        "Academic vocabulary and register",
+                        "Structured arguments with evidence",
+                        "Handling challenging questions"
+                    ],
+                    unlockCondition: "Complete 8 Level 2 scenarios and pass the mid-level assessment."
+                },
+                {
+                    id: 4,
+                    name: "College Ready",
+                    summary: "Full discussions, presentations, and debates at college level. You're ready for real classrooms and interviews.",
+                    focusAreas: [
+                        "Full presentations and discussions",
+                        "Nuanced argumentation",
+                        "Professional and academic contexts",
+                        "Spontaneous, unscripted interactions"
+                    ],
+                    unlockCondition: "Complete 10 Level 3 scenarios and demonstrate consistent fluency."
+                }
+            ],
+
+            // ==================== SCENARIO DEFINITIONS ====================
+            /** @type {Array<{id: string, category: ScenarioCategory, title: string, description: string, level: LevelId, targetSkills: string[], suggestedDurationSeconds: number, examplePrompt: string}>} */
+            scenarios: [
+                // ===== OFFICE HOURS =====
+                {
+                    id: "oh-001",
+                    category: "office_hours",
+                    title: "Asking for Clarification",
+                    description: "You didn't fully understand a concept from lecture. Ask your professor to explain it in a different way.",
+                    level: 1,
+                    targetSkills: ["asking for help", "admitting confusion politely", "active listening"],
+                    suggestedDurationSeconds: 45,
+                    examplePrompt: "Professor, I'm having trouble understanding the concept of supply and demand from today's lecture. Could you explain it using a different example?"
+                },
+                {
+                    id: "oh-002",
+                    category: "office_hours",
+                    title: "Requesting an Extension",
+                    description: "You need more time on an assignment due to unexpected circumstances. Make a polite, professional request.",
+                    level: 2,
+                    targetSkills: ["making requests", "explaining circumstances", "professional tone"],
+                    suggestedDurationSeconds: 60,
+                    examplePrompt: "I won't be able to submit my essay on time because of a family emergency. Would it be possible to have a two-day extension?"
+                },
+                {
+                    id: "oh-003",
+                    category: "office_hours",
+                    title: "Discussing Research Interests",
+                    description: "Meet with a professor to discuss potential research opportunities and express your academic interests.",
+                    level: 3,
+                    targetSkills: ["academic discussion", "expressing interests", "asking informed questions"],
+                    suggestedDurationSeconds: 120,
+                    examplePrompt: "I read your paper on behavioral economics and I'm fascinated by how it applies to consumer decision-making. I was wondering if there might be opportunities to get involved in your research."
+                },
+
+                // ===== CLASS DISCUSSION =====
+                {
+                    id: "cd-001",
+                    category: "class_discussion",
+                    title: "Sharing a Simple Opinion",
+                    description: "Share your initial reaction to a reading or discussion topic with one supporting reason.",
+                    level: 1,
+                    targetSkills: ["expressing opinions", "giving reasons", "speaking up in class"],
+                    suggestedDurationSeconds: 30,
+                    examplePrompt: "I think the author makes a good point because it matches what I've seen in my own experience."
+                },
+                {
+                    id: "cd-002",
+                    category: "class_discussion",
+                    title: "Building on a Classmate's Point",
+                    description: "Add to what someone else said while introducing your own perspective.",
+                    level: 2,
+                    targetSkills: ["active listening", "connecting ideas", "respectful disagreement"],
+                    suggestedDurationSeconds: 60,
+                    examplePrompt: "I'd like to build on what Sarah said, but I see it differently. While she emphasized the economic factors, I think the social aspects are equally important because..."
+                },
+                {
+                    id: "cd-003",
+                    category: "class_discussion",
+                    title: "Defending Your Position",
+                    description: "Present and defend a position on a controversial topic, responding to counterarguments.",
+                    level: 3,
+                    targetSkills: ["argumentation", "handling opposition", "evidence-based reasoning"],
+                    suggestedDurationSeconds: 90,
+                    examplePrompt: "I understand the concern about cost, but I believe the long-term benefits outweigh the initial investment. Let me explain why with three specific examples..."
+                },
+
+                // ===== PRESENTATION =====
+                {
+                    id: "pr-001",
+                    category: "presentation",
+                    title: "Introducing Yourself to a Group",
+                    description: "Give a brief self-introduction to your class or study group on the first day.",
+                    level: 1,
+                    targetSkills: ["self-introduction", "sharing background", "making connections"],
+                    suggestedDurationSeconds: 45,
+                    examplePrompt: "Hi everyone, I'm Alex from Shanghai. I'm majoring in Computer Science and I'm really interested in AI. Outside of class, I love playing basketball."
+                },
+                {
+                    id: "pr-002",
+                    category: "presentation",
+                    title: "Explaining a Concept",
+                    description: "Explain a technical concept or idea to classmates who aren't familiar with the topic.",
+                    level: 2,
+                    targetSkills: ["clear explanation", "using analogies", "checking understanding"],
+                    suggestedDurationSeconds: 90,
+                    examplePrompt: "Today I'll explain how blockchain works. Think of it like a shared notebook that everyone can see but no one can erase..."
+                },
+                {
+                    id: "pr-003",
+                    category: "presentation",
+                    title: "Handling Q&A",
+                    description: "Present your project and confidently handle questions from the audience.",
+                    level: 4,
+                    targetSkills: ["presentation skills", "thinking on feet", "acknowledging limitations"],
+                    suggestedDurationSeconds: 180,
+                    examplePrompt: "That's a great question I hadn't considered. Based on our data, I think it relates to our findings because... though I'd need to do more research to be certain."
+                },
+
+                // ===== SOCIAL INTERACTION =====
+                {
+                    id: "si-001",
+                    category: "social_interaction",
+                    title: "Meeting Your Roommate",
+                    description: "Introduce yourself to your new roommate and start getting to know each other.",
+                    level: 1,
+                    targetSkills: ["small talk", "asking questions", "finding common ground"],
+                    suggestedDurationSeconds: 45,
+                    examplePrompt: "Hey! I'm your new roommate. I'm from China — Shanghai, specifically. What about you? What are you studying?"
+                },
+                {
+                    id: "si-002",
+                    category: "social_interaction",
+                    title: "Joining a Club",
+                    description: "Ask about joining a student club and express your interest in getting involved.",
+                    level: 2,
+                    targetSkills: ["expressing interest", "asking for information", "showing enthusiasm"],
+                    suggestedDurationSeconds: 60,
+                    examplePrompt: "Hi! I heard this club does community service projects. I'm really interested in getting involved. How can I join, and what kind of activities do you do?"
+                },
+                {
+                    id: "si-003",
+                    category: "social_interaction",
+                    title: "Networking at an Event",
+                    description: "Start a conversation with a professional or alumni at a networking event.",
+                    level: 3,
+                    targetSkills: ["professional small talk", "asking thoughtful questions", "following up"],
+                    suggestedDurationSeconds: 90,
+                    examplePrompt: "Hi, I noticed you work at Google. I'm a CS major really interested in product management. Would you mind sharing how you got into your current role?"
+                }
+            ],
+
+            // ==================== HOW IT WORKS STEPS ====================
+            /** @type {Array<{step: string, title: string, goal: string, description: string, content: string[], output: string, icon: string}>} */
+            howItWorksSteps: [
+                {
+                    step: "01",
+                    title: "Assessment",
+                    goal: "Understand your current level without judgment",
+                    description: "A friendly, low-pressure conversation to discover where you are now. We'll learn about your speaking confidence, comfort zones, and goals — not to grade you, but to help you.",
+                    content: [
+                        "Quick self-introduction (tell us about yourself)",
+                        "Talk about your interests and hobbies",
+                        "Share a simple opinion on a topic you choose",
+                        "Try one college-related scenario"
+                    ],
+                    output: "Estimated level + your strengths and areas to grow",
+                    icon: "clipboard-check"
+                },
+                {
+                    step: "02",
+                    title: "Personalized Path",
+                    goal: "Build a practice roadmap just for you",
+                    description: "Based on your assessment, we create a clear journey tailored to your needs. Whether you're preparing for interviews, building classroom confidence, or improving social English — your path is yours.",
+                    content: [
+                        "Recommended scenario categories for you",
+                        "Suggested difficulty progression",
+                        "Realistic practice frequency (15-20 min/day)",
+                        "Week-by-week journey view"
+                    ],
+                    output: "A simple journey map (Week 1-2, Week 3-4...) that feels achievable",
+                    icon: "map"
+                },
+                {
+                    step: "03",
+                    title: "Practice & Feedback",
+                    goal: "Practice real scenarios and get rich feedback",
+                    description: "Choose a scenario, record your response, and receive detailed feedback. We evaluate pronunciation, fluency, grammar, vocabulary, and communication style — plus Culture Tips for Western academic contexts.",
+                    content: [
+                        "Pick a scenario from your recommended list",
+                        "Record your spoken response",
+                        "Get instant AI feedback on 5 dimensions",
+                        "Receive Culture Tips for U.S./U.K. norms"
+                    ],
+                    output: "Session report + suggestion for what to practice next",
+                    icon: "chat-bubble"
+                },
+                {
+                    step: "04",
+                    title: "Progress Tracking",
+                    goal: "See your growth and feel more confident",
+                    description: "Watch yourself improve over time with simple, encouraging visuals. Track your practice streaks, see skill score trends, and celebrate milestones as you unlock new achievements.",
+                    content: [
+                        "Total practice count and speaking minutes",
+                        "Skill score trends over time",
+                        "Self-reported confidence changes",
+                        "Badges and milestone achievements"
+                    ],
+                    output: "Visual trends and milestones showing your progress",
+                    icon: "chart-bar"
+                }
+            ],
+
+            // ==================== HELPER FUNCTIONS ====================
+            
+            /**
+             * Get scenarios by category
+             * @param {ScenarioCategory} category
+             * @returns {Array}
+             */
+            getScenariosByCategory: function(category) {
+                return this.scenarios.filter(s => s.category === category);
+            },
+
+            /**
+             * Get scenarios by level
+             * @param {LevelId} level
+             * @returns {Array}
+             */
+            getScenariosByLevel: function(level) {
+                return this.scenarios.filter(s => s.level === level);
+            },
+
+            /**
+             * Get level by ID
+             * @param {LevelId} id
+             * @returns {Object|undefined}
+             */
+            getLevelById: function(id) {
+                return this.levels.find(l => l.id === id);
+            },
+
+            /**
+             * Get category display name
+             * @param {ScenarioCategory} category
+             * @returns {string}
+             */
+            getCategoryDisplayName: function(category) {
+                const names = {
+                    'office_hours': 'Office Hours',
+                    'class_discussion': 'Class Discussions',
+                    'presentation': 'Presentations',
+                    'social_interaction': 'Social Interactions'
+                };
+                return names[category] || category;
+            },
+
+            /**
+             * Get category emoji
+             * @param {ScenarioCategory} category
+             * @returns {string}
+             */
+            getCategoryEmoji: function(category) {
+                const emojis = {
+                    'office_hours': '🎓',
+                    'class_discussion': '💬',
+                    'presentation': '📊',
+                    'social_interaction': '🤝'
+                };
+                return emojis[category] || '📝';
+            }
+        };
+
+        // Make config globally available
+        window.VoiceBridgeConfig = VoiceBridgeConfig;
+    </script>
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Source Sans 3', system-ui, sans-serif; }
@@ -249,105 +575,841 @@
             </div>
         </section>
 
-        <!-- Solution Section -->
-        <section id="solution" class="py-20 lg:py-28 bg-gradient-to-b from-white via-amber-50/20 to-white">
+        <!-- ============================================================
+             SOLUTION SECTION
+             Component Tree:
+             <SolutionSection>
+               ├── <SolutionHeader />
+               ├── <AiPracticeSection />
+               ├── <CulturallyResponsiveSection />
+               ├── <ProgressiveChallengesSection />
+               ├── <RealWorldScenariosSection />
+               └── <HowItWorksSection />
+             ============================================================ -->
+        <section id="solution" class="py-16 lg:py-24 bg-gradient-to-b from-white via-amber-50/30 to-white">
             <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-                <div class="max-w-3xl mx-auto text-center mb-14">
+                
+                <!-- ========== SolutionHeader ========== -->
+                <div class="max-w-3xl mx-auto text-center mb-20">
                     <span class="inline-block px-5 py-2 bg-gradient-to-r from-navy-100 to-blue-100 text-navy-700 rounded-full text-sm font-bold uppercase tracking-wider mb-6">Our Approach</span>
                     <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-navy-900 mb-6 leading-tight">The VoiceBridge Solution</h2>
-                    <p class="text-lg sm:text-xl text-navy-600 leading-relaxed">A technology-enhanced approach to building confident English communication skills through safe, supportive, and engaging practice.</p>
+                    <p class="text-lg sm:text-xl text-navy-600 leading-relaxed">A comprehensive AI-powered platform that prepares students for confident English communication — from college application interviews to classroom discussions and beyond.</p>
                 </div>
 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
-                    <div class="bg-white rounded-3xl shadow-xl shadow-navy-900/5 border border-navy-100/50 p-6 sm:p-8 group hover:shadow-2xl hover:shadow-navy-900/10 hover:-translate-y-1 transition-all duration-300">
-                        <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-lg sm:text-xl font-bold text-navy-900 mb-3">AI-Powered Practice</h3>
-                        <p class="text-navy-600 text-sm sm:text-base leading-relaxed">Safe, judgment-free environment for students to practice speaking with intelligent feedback and guidance.</p>
-                    </div>
-                    <div class="bg-white rounded-3xl shadow-xl shadow-navy-900/5 border border-navy-100/50 p-6 sm:p-8 group hover:shadow-2xl hover:shadow-navy-900/10 hover:-translate-y-1 transition-all duration-300">
-                        <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-lg sm:text-xl font-bold text-navy-900 mb-3">Culturally Responsive</h3>
-                        <p class="text-navy-600 text-sm sm:text-base leading-relaxed">Designed with understanding of Chinese educational contexts and the specific needs of international students.</p>
-                    </div>
-                    <div class="bg-white rounded-3xl shadow-xl shadow-navy-900/5 border border-navy-100/50 p-6 sm:p-8 group hover:shadow-2xl hover:shadow-navy-900/10 hover:-translate-y-1 transition-all duration-300">
-                        <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-lg sm:text-xl font-bold text-navy-900 mb-3">Progressive Challenges</h3>
-                        <p class="text-navy-600 text-sm sm:text-base leading-relaxed">Scaffolded activities that build confidence gradually from simple conversations to academic discussions.</p>
-                    </div>
-                    <div class="bg-white rounded-3xl shadow-xl shadow-navy-900/5 border border-navy-100/50 p-6 sm:p-8 group hover:shadow-2xl hover:shadow-navy-900/10 hover:-translate-y-1 transition-all duration-300">
-                        <div class="w-14 h-14 bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-display text-lg sm:text-xl font-bold text-navy-900 mb-3">Real-World Scenarios</h3>
-                        <p class="text-navy-600 text-sm sm:text-base leading-relaxed">Practice situations students will encounter in college: office hours, class discussions, presentations, and social interactions.</p>
-                    </div>
-                </div>
-
-                <!-- How It Works -->
-                <div class="grid lg:grid-cols-2 gap-8 items-center">
-                    <div class="order-2 lg:order-1">
-                        <h3 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-navy-900 mb-8">How It Works</h3>
-                        <div class="space-y-5">
-                            <div class="flex gap-5 items-start group">
-                                <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-navy-800 to-navy-900 text-amber-400 rounded-2xl flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-navy-900/20 group-hover:scale-105 transition-transform">01</div>
-                                <div class="pt-1">
-                                    <h4 class="font-bold text-navy-900 text-lg mb-1">Assessment</h4>
-                                    <p class="text-navy-600 leading-relaxed">Students complete an initial speaking assessment to identify strengths and areas for growth.</p>
+                <!-- ========== 1. AiPracticeSection ========== -->
+                <div id="ai-practice" class="mb-20 scroll-mt-24">
+                    <div class="bg-gradient-to-br from-amber-50 via-orange-50/50 to-white rounded-3xl border border-amber-100/50 overflow-hidden">
+                        <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-amber-500 to-orange-500 px-8 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
                                 </div>
-                            </div>
-                            <div class="flex gap-5 items-start group">
-                                <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-navy-800 to-navy-900 text-amber-400 rounded-2xl flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-navy-900/20 group-hover:scale-105 transition-transform">02</div>
-                                <div class="pt-1">
-                                    <h4 class="font-bold text-navy-900 text-lg mb-1">Personalized Path</h4>
-                                    <p class="text-navy-600 leading-relaxed">AI generates a customized learning journey based on individual needs and college goals.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-5 items-start group">
-                                <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-navy-800 to-navy-900 text-amber-400 rounded-2xl flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-navy-900/20 group-hover:scale-105 transition-transform">03</div>
-                                <div class="pt-1">
-                                    <h4 class="font-bold text-navy-900 text-lg mb-1">Practice & Feedback</h4>
-                                    <p class="text-navy-600 leading-relaxed">Engaging speaking activities with real-time, constructive feedback in a safe environment.</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-5 items-start group">
-                                <div class="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-navy-800 to-navy-900 text-amber-400 rounded-2xl flex items-center justify-center font-display font-bold text-lg shadow-lg shadow-navy-900/20 group-hover:scale-105 transition-transform">04</div>
-                                <div class="pt-1">
-                                    <h4 class="font-bold text-navy-900 text-lg mb-1">Progress Tracking</h4>
-                                    <p class="text-navy-600 leading-relaxed">Monitor growth over time with detailed analytics and milestone celebrations.</p>
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white">AI-Powered Practice</h3>
+                                    <p class="text-amber-100 text-sm">Your 24/7 speaking partner — patient, supportive, and always available</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="order-1 lg:order-2">
-                        <div class="bg-gradient-to-br from-navy-100 via-blue-50 to-amber-50 rounded-3xl shadow-xl shadow-navy-900/5 border border-navy-200/30 p-6 sm:p-8 lg:p-10">
-                            <div class="aspect-video bg-white rounded-2xl shadow-inner flex items-center justify-center">
-                                <div class="text-center p-8">
-                                    <div class="w-20 h-20 bg-gradient-to-br from-navy-100 to-navy-200 rounded-full flex items-center justify-center mx-auto mb-5 shadow-lg">
-                                        <svg class="w-10 h-10 text-navy-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M8 5v14l11-7z" />
+                        
+                        <!-- Section Content -->
+                        <div class="p-8 lg:p-10">
+                            <p class="text-navy-700 text-lg leading-relaxed mb-8 max-w-3xl">
+                                Practice anytime with an AI conversation partner that provides personalized feedback in a completely non-judgmental environment. <strong>This isn't a test — it's practice.</strong> Making mistakes is not just okay, it's expected and welcomed.
+                            </p>
+                            
+                            <!-- Feature Cards Grid -->
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <!-- Conversation Engine -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-amber-900/5 border border-amber-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                         </svg>
                                     </div>
-                                    <p class="text-navy-700 font-semibold text-lg">Demo Video</p>
-                                    <p class="text-navy-500 text-sm mt-1">Coming Soon</p>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Conversation Engine</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed mb-4">Realistic AI interactions that feel like talking to a real person.</p>
+                                    <ul class="space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Self-introductions & small talk</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Class discussions & debates</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Office hours conversations</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Presentations & Q&A</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Feedback Engine -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-amber-900/5 border border-amber-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Feedback Engine</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed mb-4">Detailed, constructive feedback that helps you improve.</p>
+                                    <ul class="space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Pronunciation & fluency</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Grammar & vocabulary</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Pragmatic appropriateness</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Politeness & cultural fit</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Safe Practice Environment -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-amber-900/5 border border-amber-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Safe Practice Space</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed mb-4">A private environment where mistakes are learning opportunities.</p>
+                                    <ul class="space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> No judgment, no grades</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Unlimited retries</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Private & confidential</li>
+                                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">•</span> Mistakes welcomed</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- ========== 2. CulturallyResponsiveSection ========== -->
+                <div id="culturally-responsive" class="mb-20 scroll-mt-24">
+                    <div class="bg-gradient-to-br from-emerald-50 via-teal-50/50 to-white rounded-3xl border border-emerald-100/50 overflow-hidden">
+                        <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white">Culturally Responsive</h3>
+                                    <p class="text-emerald-100 text-sm">Built specifically for Chinese international school students</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Content -->
+                        <div class="p-8 lg:p-10">
+                            <p class="text-navy-700 text-lg leading-relaxed mb-8 max-w-3xl">
+                                VoiceBridge isn't a generic speaking app. It's designed specifically for students from Chinese international schools who are preparing to enter Western academic environments — <strong>understanding both where you're coming from and where you're going.</strong>
+                            </p>
+                            
+                            <!-- Feature Cards -->
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <!-- International School Context -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-emerald-900/5 border border-emerald-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Context Alignment</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed">Scenarios based on real life at international schools:</p>
+                                    <ul class="mt-3 space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> IB/AP/A-Level class discussions</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> School activities & clubs</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> College counseling sessions</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Application prep & interviews</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Culture Tips -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-emerald-900/5 border border-emerald-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Culture Tips in Feedback</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed">Short, actionable notes on communication norms:</p>
+                                    <ul class="mt-3 space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> U.S./U.K. classroom expectations</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> What's appropriate vs. expected</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Professional communication norms</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Social cues & etiquette</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Language Transition -->
+                                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-emerald-900/5 border border-emerald-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center mb-4">
+                                        <svg class="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                                        </svg>
+                                    </div>
+                                    <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Language Transition Support</h4>
+                                    <p class="text-navy-600 text-sm leading-relaxed">Adapts to your current level:</p>
+                                    <ul class="mt-3 space-y-2 text-sm text-navy-600">
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Simplified scaffolding for beginners</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Full English for advanced levels</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Academic vocabulary building</li>
+                                        <li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span> Gradual complexity increase</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 3. ProgressiveChallengesSection ========== 
+                     Data Source: VoiceBridgeConfig.levels
+                     This section renders level data from the configuration object.
+                -->
+                <div id="progressive-challenges" class="mb-20 scroll-mt-24">
+                    <div class="bg-gradient-to-br from-blue-50 via-indigo-50/50 to-white rounded-3xl border border-blue-100/50 overflow-hidden">
+                        <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-500 px-8 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white">Progressive Challenges</h3>
+                                    <p class="text-blue-100 text-sm">From "getting comfortable" to "college ready" — at your own pace</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Content -->
+                        <div class="p-8 lg:p-10">
+                            <p class="text-navy-700 text-lg leading-relaxed mb-8 max-w-3xl">
+                                We never throw you into the deep end. <strong>Challenges grow with your confidence</strong> — starting with simple, low-pressure tasks and gradually building toward the complex communication you'll need in college classrooms.
+                            </p>
+                            
+                            <!-- Level Progress Cards - Data from VoiceBridgeConfig.levels -->
+                            <div id="levels-container" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                                <!-- Level 1 - data-level-id="1" -->
+                                <div class="relative bg-white rounded-2xl shadow-lg shadow-blue-900/5 border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-300 overflow-hidden" data-level-id="1">
+                                    <div class="absolute -top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-blue-500"></div>
+                                    <div class="p-6 pt-5">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider">Level 1</span>
+                                            <span class="text-xs text-navy-400">Beginner</span>
+                                        </div>
+                                        <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Getting Comfortable</h4>
+                                        <p class="text-navy-600 text-sm leading-relaxed mb-4">Build confidence with short responses and familiar topics. Lots of support and encouragement as you find your voice.</p>
+                                        <div class="space-y-2 text-xs text-navy-500">
+                                            <p class="font-semibold text-navy-700">Focus Areas:</p>
+                                            <ul class="space-y-1">
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Short responses (15-30 sec)</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Familiar everyday topics</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Basic self-introduction</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-4 pt-4 border-t border-blue-100">
+                                            <p class="text-xs text-emerald-600 font-medium flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                                Available from the start
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-blue-100">
+                                        <div class="h-full w-1/4 bg-gradient-to-r from-blue-400 to-blue-500"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Level 2 - data-level-id="2" -->
+                                <div class="relative bg-white rounded-2xl shadow-lg shadow-blue-900/5 border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-300 overflow-hidden" data-level-id="2">
+                                    <div class="absolute -top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+                                    <div class="p-6 pt-5">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider">Level 2</span>
+                                            <span class="text-xs text-navy-400">Intermediate</span>
+                                        </div>
+                                        <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Expressing Ideas</h4>
+                                        <p class="text-navy-600 text-sm leading-relaxed mb-4">Practice sharing opinions and explaining your thinking more clearly. Responses get longer and topics more varied.</p>
+                                        <div class="space-y-2 text-xs text-navy-500">
+                                            <p class="font-semibold text-navy-700">Focus Areas:</p>
+                                            <ul class="space-y-1">
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Longer responses (45-60 sec)</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Sharing & supporting opinions</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-blue-500 mt-0.5">•</span> Basic argumentation</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-4 pt-4 border-t border-blue-100">
+                                            <p class="text-xs text-navy-500 font-medium flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                                Complete 5 Level 1 scenarios
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-blue-100">
+                                        <div class="h-full w-2/4 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Level 3 - data-level-id="3" -->
+                                <div class="relative bg-white rounded-2xl shadow-lg shadow-blue-900/5 border-2 border-blue-100 hover:border-blue-300 hover:shadow-xl transition-all duration-300 overflow-hidden" data-level-id="3">
+                                    <div class="absolute -top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 to-purple-500"></div>
+                                    <div class="p-6 pt-5">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-bold uppercase tracking-wider">Level 3</span>
+                                            <span class="text-xs text-navy-400">Advanced</span>
+                                        </div>
+                                        <h4 class="font-display text-lg font-bold text-navy-900 mb-2">Academic Talk</h4>
+                                        <p class="text-navy-600 text-sm leading-relaxed mb-4">Engage with complex topics using academic vocabulary and structured arguments. Practice college-level discourse.</p>
+                                        <div class="space-y-2 text-xs text-navy-500">
+                                            <p class="font-semibold text-navy-700">Focus Areas:</p>
+                                            <ul class="space-y-1">
+                                                <li class="flex items-start gap-1.5"><span class="text-indigo-500 mt-0.5">•</span> Extended responses (90-120 sec)</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-indigo-500 mt-0.5">•</span> Academic vocabulary</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-indigo-500 mt-0.5">•</span> Structured arguments</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-4 pt-4 border-t border-blue-100">
+                                            <p class="text-xs text-navy-500 font-medium flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                                Complete 8 Level 2 + assessment
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-indigo-100">
+                                        <div class="h-full w-3/4 bg-gradient-to-r from-indigo-400 to-purple-500"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Level 4 - data-level-id="4" -->
+                                <div class="relative bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-lg shadow-amber-900/5 border-2 border-amber-200 hover:border-amber-300 hover:shadow-xl transition-all duration-300 overflow-hidden" data-level-id="4">
+                                    <div class="absolute -top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                                    <div class="p-6 pt-5">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="px-3 py-1 bg-gradient-to-r from-amber-400 to-orange-400 text-white rounded-full text-xs font-bold uppercase tracking-wider">Level 4</span>
+                                            <span class="text-xs text-amber-600 font-semibold">🎓 College Ready</span>
+                                        </div>
+                                        <h4 class="font-display text-lg font-bold text-navy-900 mb-2">College Ready</h4>
+                                        <p class="text-navy-600 text-sm leading-relaxed mb-4">Full discussions, presentations, and debates at college level. You're ready for real classrooms and interviews.</p>
+                                        <div class="space-y-2 text-xs text-navy-500">
+                                            <p class="font-semibold text-navy-700">Focus Areas:</p>
+                                            <ul class="space-y-1">
+                                                <li class="flex items-start gap-1.5"><span class="text-amber-500 mt-0.5">•</span> Full presentations & discussions</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-amber-500 mt-0.5">•</span> Nuanced argumentation</li>
+                                                <li class="flex items-start gap-1.5"><span class="text-amber-500 mt-0.5">•</span> Spontaneous interactions</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mt-4 pt-4 border-t border-amber-200">
+                                            <p class="text-xs text-amber-600 font-medium flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+                                                Complete 10 Level 3 + fluency
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="h-2 bg-amber-100">
+                                        <div class="h-full w-full bg-gradient-to-r from-amber-400 to-orange-500"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Gamification Elements -->
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+                                <h4 class="font-display text-lg font-bold text-navy-900 mb-4">Stay Motivated with Gamification</h4>
+                                <div class="flex flex-wrap gap-4">
+                                    <div class="flex items-center gap-3 bg-white px-4 py-3 rounded-xl shadow-sm">
+                                        <span class="text-2xl">🎯</span>
+                                        <div>
+                                            <p class="font-semibold text-navy-900 text-sm">XP Points</p>
+                                            <p class="text-navy-500 text-xs">Earn XP for every practice</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 bg-white px-4 py-3 rounded-xl shadow-sm">
+                                        <span class="text-2xl">🏆</span>
+                                        <div>
+                                            <p class="font-semibold text-navy-900 text-sm">Milestones</p>
+                                            <p class="text-navy-500 text-xs">Celebrate your progress</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 bg-white px-4 py-3 rounded-xl shadow-sm">
+                                        <span class="text-2xl">🔥</span>
+                                        <div>
+                                            <p class="font-semibold text-navy-900 text-sm">Streaks</p>
+                                            <p class="text-navy-500 text-xs">Build daily habits</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 bg-white px-4 py-3 rounded-xl shadow-sm">
+                                        <span class="text-2xl">🎖️</span>
+                                        <div>
+                                            <p class="font-semibold text-navy-900 text-sm">Badges</p>
+                                            <p class="text-navy-500 text-xs">Unlock achievements</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 4. RealWorldScenariosSection ========== 
+                     Data Source: VoiceBridgeConfig.scenarios
+                     This section renders scenario data from the configuration object.
+                     Categories: office_hours, class_discussion, presentation, social_interaction
+                -->
+                <div id="real-world-scenarios" class="mb-20 scroll-mt-24">
+                    <div class="bg-gradient-to-br from-rose-50 via-pink-50/50 to-white rounded-3xl border border-rose-100/50 overflow-hidden">
+                        <!-- Section Header -->
+                        <div class="bg-gradient-to-r from-rose-500 to-pink-500 px-8 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-display text-2xl font-bold text-white">Real-World Scenarios</h3>
+                                    <p class="text-rose-100 text-sm">Practice what you'll actually face — not textbook dialogues</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Content -->
+                        <div class="p-8 lg:p-10">
+                            <p class="text-navy-700 text-lg leading-relaxed mb-8 max-w-3xl">
+                                Every practice task comes from <strong>authentic situations students will actually encounter</strong>. No artificial exercises — just the real conversations you'll need to navigate in college life.
+                            </p>
+                            
+                            <!-- Scenario Cards Grid - Data from VoiceBridgeConfig.scenarios -->
+                            <div id="scenarios-container" class="grid sm:grid-cols-2 gap-6">
+                                
+                                <!-- Office Hours - data-category="office_hours" -->
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-lg shadow-rose-900/5 border border-rose-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-category="office_hours">
+                                    <div class="bg-gradient-to-r from-rose-100 to-pink-100 px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-2xl">🎓</span>
+                                                <h4 class="font-display text-lg font-bold text-navy-900">Office Hours</h4>
+                                            </div>
+                                            <span class="text-xs bg-rose-200 text-rose-700 px-2 py-1 rounded-full font-medium">3 scenarios</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <p class="text-navy-600 text-sm mb-4">Learn to communicate effectively with professors one-on-one — asking questions, requesting help, and building academic relationships.</p>
+                                        
+                                        <!-- Scenario Examples -->
+                                        <div class="space-y-3">
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="oh-001">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 1</span>
+                                                    <span class="text-xs text-navy-500">Asking for Clarification</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Professor, I'm having trouble understanding this concept from lecture. Could you explain it using a different example?"</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="oh-002">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 2</span>
+                                                    <span class="text-xs text-navy-500">Requesting an Extension</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"I won't be able to submit my essay on time because of a family emergency. Would it be possible to have a two-day extension?"</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-400" data-scenario-id="oh-003">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">Level 3</span>
+                                                    <span class="text-xs text-navy-500">Discussing Research Interests</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"I read your paper on behavioral economics and I'm fascinated by how it applies to consumer decision-making..."</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-4 border-t border-rose-100 flex items-center justify-between">
+                                            <p class="text-xs text-navy-500">Target skills: asking for help, professional tone, making requests</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Class Discussions - data-category="class_discussion" -->
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-lg shadow-rose-900/5 border border-rose-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-category="class_discussion">
+                                    <div class="bg-gradient-to-r from-rose-100 to-pink-100 px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-2xl">💬</span>
+                                                <h4 class="font-display text-lg font-bold text-navy-900">Class Discussions</h4>
+                                            </div>
+                                            <span class="text-xs bg-rose-200 text-rose-700 px-2 py-1 rounded-full font-medium">3 scenarios</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <p class="text-navy-600 text-sm mb-4">Contribute meaningfully to seminar and classroom conversations — sharing opinions, building on others' ideas, and engaging in debate.</p>
+                                        
+                                        <!-- Scenario Examples -->
+                                        <div class="space-y-3">
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="cd-001">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 1</span>
+                                                    <span class="text-xs text-navy-500">Sharing a Simple Opinion</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"I think the author makes a good point because it matches what I've seen in my own experience."</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="cd-002">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 2</span>
+                                                    <span class="text-xs text-navy-500">Building on a Classmate's Point</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"I'd like to build on what Sarah said, but I see it differently. While she emphasized the economic factors..."</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-400" data-scenario-id="cd-003">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">Level 3</span>
+                                                    <span class="text-xs text-navy-500">Defending Your Position</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"I understand the concern about cost, but I believe the long-term benefits outweigh the initial investment..."</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-4 border-t border-rose-100 flex items-center justify-between">
+                                            <p class="text-xs text-navy-500">Target skills: expressing opinions, active listening, argumentation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Presentations - data-category="presentation" -->
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-lg shadow-rose-900/5 border border-rose-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-category="presentation">
+                                    <div class="bg-gradient-to-r from-rose-100 to-pink-100 px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-2xl">📊</span>
+                                                <h4 class="font-display text-lg font-bold text-navy-900">Presentations</h4>
+                                            </div>
+                                            <span class="text-xs bg-rose-200 text-rose-700 px-2 py-1 rounded-full font-medium">3 scenarios</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <p class="text-navy-600 text-sm mb-4">Present projects confidently and handle Q&A sessions — explaining ideas clearly, answering questions, and engaging your audience.</p>
+                                        
+                                        <!-- Scenario Examples -->
+                                        <div class="space-y-3">
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="pr-001">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 1</span>
+                                                    <span class="text-xs text-navy-500">Introducing Yourself to a Group</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Hi everyone, I'm Alex from Shanghai. I'm majoring in Computer Science and I'm really interested in AI..."</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="pr-002">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 2</span>
+                                                    <span class="text-xs text-navy-500">Explaining a Concept</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Today I'll explain how blockchain works. Think of it like a shared notebook that everyone can see but no one can erase..."</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-amber-400" data-scenario-id="pr-003">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">Level 4</span>
+                                                    <span class="text-xs text-navy-500">Handling Q&A</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"That's a great question I hadn't considered. Based on our data, I think it relates to our findings because..."</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-4 border-t border-rose-100 flex items-center justify-between">
+                                            <p class="text-xs text-navy-500">Target skills: clear explanation, thinking on feet, using analogies</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Social Interactions - data-category="social_interaction" -->
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-lg shadow-rose-900/5 border border-rose-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-category="social_interaction">
+                                    <div class="bg-gradient-to-r from-rose-100 to-pink-100 px-6 py-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-2xl">🤝</span>
+                                                <h4 class="font-display text-lg font-bold text-navy-900">Social Interactions</h4>
+                                            </div>
+                                            <span class="text-xs bg-rose-200 text-rose-700 px-2 py-1 rounded-full font-medium">3 scenarios</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-6">
+                                        <p class="text-navy-600 text-sm mb-4">Navigate social situations on campus with confidence — meeting new people, joining activities, and building your network.</p>
+                                        
+                                        <!-- Scenario Examples -->
+                                        <div class="space-y-3">
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="si-001">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 1</span>
+                                                    <span class="text-xs text-navy-500">Meeting Your Roommate</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Hey! I'm your new roommate. I'm from China — Shanghai, specifically. What about you? What are you studying?"</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-300" data-scenario-id="si-002">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Level 2</span>
+                                                    <span class="text-xs text-navy-500">Joining a Club</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Hi! I heard this club does community service projects. I'm really interested in getting involved. How can I join?"</p>
+                                            </div>
+                                            <div class="bg-rose-50 rounded-xl p-4 border-l-4 border-rose-400" data-scenario-id="si-003">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium">Level 3</span>
+                                                    <span class="text-xs text-navy-500">Networking at an Event</span>
+                                                </div>
+                                                <p class="text-navy-700 italic text-sm">"Hi, I noticed you work at Google. I'm a CS major really interested in product management. Would you mind sharing..."</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 pt-4 border-t border-rose-100 flex items-center justify-between">
+                                            <p class="text-xs text-navy-500">Target skills: small talk, asking questions, showing enthusiasm</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Scenario Stats -->
+                            <div class="mt-8 bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-100">
+                                <div class="flex flex-wrap items-center justify-between gap-4">
+                                    <div>
+                                        <h4 class="font-display text-lg font-bold text-navy-900 mb-1">Scenario Library</h4>
+                                        <p class="text-navy-600 text-sm">New scenarios added regularly based on student feedback</p>
+                                    </div>
+                                    <div class="flex gap-6">
+                                        <div class="text-center">
+                                            <p class="text-2xl font-display font-bold text-rose-600">12+</p>
+                                            <p class="text-xs text-navy-500">Total Scenarios</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-2xl font-display font-bold text-rose-600">4</p>
+                                            <p class="text-xs text-navy-500">Categories</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-2xl font-display font-bold text-rose-600">4</p>
+                                            <p class="text-xs text-navy-500">Difficulty Levels</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 5. HowItWorksSection ========== -->
+                <div id="how-it-works" class="scroll-mt-24">
+                    <div class="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 rounded-3xl p-8 lg:p-12 text-white overflow-hidden relative">
+                        <!-- Background decoration -->
+                        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-full blur-3xl"></div>
+                        <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-full blur-3xl"></div>
+                        <div class="absolute top-1/2 left-1/3 w-48 h-48 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 rounded-full blur-2xl"></div>
+                        
+                        <div class="relative z-10">
+                            <!-- Section Header -->
+                            <div class="text-center mb-14">
+                                <span class="inline-block px-4 py-2 bg-amber-500/20 text-amber-300 rounded-full text-sm font-bold uppercase tracking-wider mb-4 border border-amber-500/20">Your Journey</span>
+                                <h3 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">How It Works</h3>
+                                <p class="text-navy-200 max-w-2xl mx-auto text-lg">A clear, supportive 4-step journey from wherever you are now to confident college communication.</p>
+                            </div>
+                            
+                            <!-- Steps Grid - Enhanced with detailed content -->
+                            <div class="grid sm:grid-cols-2 gap-6 mb-10">
+                                
+                                <!-- Step 1: Assessment -->
+                                <div class="relative group">
+                                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 h-full hover:bg-white/15 transition-all duration-300 overflow-hidden">
+                                        <!-- Step Header -->
+                                        <div class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 px-6 py-4 border-b border-white/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 text-navy-900 rounded-xl flex items-center justify-center font-display font-bold text-xl group-hover:scale-110 transition-transform duration-300 shadow-lg">01</div>
+                                                <div>
+                                                    <h4 class="font-bold text-xl">Assessment</h4>
+                                                    <p class="text-amber-300 text-sm font-medium">Understand your current level</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step Content -->
+                                        <div class="p-6">
+                                            <p class="text-navy-200 leading-relaxed mb-5">A friendly, low-pressure conversation to discover where you are now. We'll learn about your speaking confidence, comfort zones, and goals — <strong class="text-white">not to grade you, but to help you.</strong></p>
+                                            
+                                            <div class="mb-5">
+                                                <p class="text-white text-sm font-semibold mb-3 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                                                    What you'll do:
+                                                </p>
+                                                <ul class="space-y-2 text-sm text-navy-300">
+                                                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-1">•</span> Quick self-introduction (tell us about yourself)</li>
+                                                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-1">•</span> Talk about your interests and hobbies</li>
+                                                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-1">•</span> Share a simple opinion on a topic you choose</li>
+                                                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-1">•</span> Try one college-related scenario</li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                                                <p class="text-xs text-navy-400 uppercase tracking-wider mb-1">Output</p>
+                                                <p class="text-amber-300 text-sm font-medium">Estimated level + your strengths and areas to grow</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Arrow for desktop -->
+                                    <div class="hidden sm:flex absolute top-1/2 -right-3 transform -translate-y-1/2 text-amber-400 text-2xl font-bold z-20">→</div>
+                                </div>
+                                
+                                <!-- Step 2: Personalized Path -->
+                                <div class="relative group">
+                                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 h-full hover:bg-white/15 transition-all duration-300 overflow-hidden">
+                                        <!-- Step Header -->
+                                        <div class="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 px-6 py-4 border-b border-white/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 text-navy-900 rounded-xl flex items-center justify-center font-display font-bold text-xl group-hover:scale-110 transition-transform duration-300 shadow-lg">02</div>
+                                                <div>
+                                                    <h4 class="font-bold text-xl">Personalized Path</h4>
+                                                    <p class="text-blue-300 text-sm font-medium">Build a roadmap just for you</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step Content -->
+                                        <div class="p-6">
+                                            <p class="text-navy-200 leading-relaxed mb-5">Based on your assessment, we create a clear journey tailored to your needs. Whether you're preparing for interviews, building classroom confidence, or improving social English — <strong class="text-white">your path is yours.</strong></p>
+                                            
+                                            <div class="mb-5">
+                                                <p class="text-white text-sm font-semibold mb-3 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+                                                    What we'll build:
+                                                </p>
+                                                <ul class="space-y-2 text-sm text-navy-300">
+                                                    <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span> Recommended scenario categories for you</li>
+                                                    <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span> Suggested difficulty progression</li>
+                                                    <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span> Realistic practice frequency (15-20 min/day)</li>
+                                                    <li class="flex items-start gap-2"><span class="text-blue-400 mt-1">•</span> Week-by-week journey view</li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                                                <p class="text-xs text-navy-400 uppercase tracking-wider mb-1">Output</p>
+                                                <p class="text-blue-300 text-sm font-medium">A simple journey map (Week 1-2, Week 3-4...) that feels achievable</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Step 3: Practice & Feedback -->
+                                <div class="relative group">
+                                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 h-full hover:bg-white/15 transition-all duration-300 overflow-hidden">
+                                        <!-- Step Header -->
+                                        <div class="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 px-6 py-4 border-b border-white/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 text-navy-900 rounded-xl flex items-center justify-center font-display font-bold text-xl group-hover:scale-110 transition-transform duration-300 shadow-lg">03</div>
+                                                <div>
+                                                    <h4 class="font-bold text-xl">Practice & Feedback</h4>
+                                                    <p class="text-emerald-300 text-sm font-medium">Real scenarios, rich feedback</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step Content -->
+                                        <div class="p-6">
+                                            <p class="text-navy-200 leading-relaxed mb-5">Choose a scenario, record your response, and receive detailed feedback. We evaluate pronunciation, fluency, grammar, vocabulary, and communication style — <strong class="text-white">plus Culture Tips for Western academic contexts.</strong></p>
+                                            
+                                            <div class="mb-5">
+                                                <p class="text-white text-sm font-semibold mb-3 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                                                    The practice loop:
+                                                </p>
+                                                <ul class="space-y-2 text-sm text-navy-300">
+                                                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">1.</span> Pick a scenario from your recommended list</li>
+                                                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">2.</span> Record your spoken response</li>
+                                                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">3.</span> Get instant AI feedback on 5 dimensions</li>
+                                                    <li class="flex items-start gap-2"><span class="text-emerald-400 mt-1">4.</span> Receive Culture Tips for U.S./U.K. norms</li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                                                <p class="text-xs text-navy-400 uppercase tracking-wider mb-1">Output</p>
+                                                <p class="text-emerald-300 text-sm font-medium">Session report + suggestion for what to practice next</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Arrow for desktop -->
+                                    <div class="hidden sm:flex absolute top-1/2 -right-3 transform -translate-y-1/2 text-amber-400 text-2xl font-bold z-20">→</div>
+                                </div>
+                                
+                                <!-- Step 4: Progress Tracking -->
+                                <div class="group">
+                                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl border border-white/10 h-full hover:bg-white/15 transition-all duration-300 overflow-hidden">
+                                        <!-- Step Header -->
+                                        <div class="bg-gradient-to-r from-rose-500/20 to-pink-500/20 px-6 py-4 border-b border-white/10">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-14 h-14 bg-gradient-to-br from-amber-400 to-orange-500 text-navy-900 rounded-xl flex items-center justify-center font-display font-bold text-xl group-hover:scale-110 transition-transform duration-300 shadow-lg">04</div>
+                                                <div>
+                                                    <h4 class="font-bold text-xl">Progress Tracking</h4>
+                                                    <p class="text-rose-300 text-sm font-medium">See your growth over time</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Step Content -->
+                                        <div class="p-6">
+                                            <p class="text-navy-200 leading-relaxed mb-5">Watch yourself improve over time with simple, encouraging visuals. Track your practice streaks, see skill score trends, and <strong class="text-white">celebrate milestones as you unlock new achievements.</strong></p>
+                                            
+                                            <div class="mb-5">
+                                                <p class="text-white text-sm font-semibold mb-3 flex items-center gap-2">
+                                                    <svg class="w-4 h-4 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                                    What you'll see:
+                                                </p>
+                                                <ul class="space-y-2 text-sm text-navy-300">
+                                                    <li class="flex items-start gap-2"><span class="text-rose-400 mt-1">•</span> Total practice count and speaking minutes</li>
+                                                    <li class="flex items-start gap-2"><span class="text-rose-400 mt-1">•</span> Skill score trends over time</li>
+                                                    <li class="flex items-start gap-2"><span class="text-rose-400 mt-1">•</span> Self-reported confidence changes</li>
+                                                    <li class="flex items-start gap-2"><span class="text-rose-400 mt-1">•</span> Badges and milestone achievements</li>
+                                                </ul>
+                                            </div>
+                                            
+                                            <div class="bg-white/5 rounded-xl px-4 py-3 border border-white/10">
+                                                <p class="text-xs text-navy-400 uppercase tracking-wider mb-1">Output</p>
+                                                <p class="text-rose-300 text-sm font-medium">Visual trends and milestones showing your progress</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Journey Flow Visualization -->
+                            <div class="hidden lg:flex items-center justify-center gap-4 mb-10 py-6">
+                                <div class="flex items-center gap-3 bg-white/5 px-5 py-3 rounded-full border border-white/10">
+                                    <span class="w-8 h-8 bg-amber-500 text-navy-900 rounded-lg flex items-center justify-center text-sm font-bold">01</span>
+                                    <span class="text-white font-medium">Assessment</span>
+                                </div>
+                                <svg class="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                <div class="flex items-center gap-3 bg-white/5 px-5 py-3 rounded-full border border-white/10">
+                                    <span class="w-8 h-8 bg-amber-500 text-navy-900 rounded-lg flex items-center justify-center text-sm font-bold">02</span>
+                                    <span class="text-white font-medium">Path</span>
+                                </div>
+                                <svg class="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                <div class="flex items-center gap-3 bg-white/5 px-5 py-3 rounded-full border border-white/10">
+                                    <span class="w-8 h-8 bg-amber-500 text-navy-900 rounded-lg flex items-center justify-center text-sm font-bold">03</span>
+                                    <span class="text-white font-medium">Practice</span>
+                                </div>
+                                <svg class="w-6 h-6 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                <div class="flex items-center gap-3 bg-gradient-to-r from-amber-500/20 to-orange-500/20 px-5 py-3 rounded-full border border-amber-500/30">
+                                    <span class="w-8 h-8 bg-amber-500 text-navy-900 rounded-lg flex items-center justify-center text-sm font-bold">04</span>
+                                    <span class="text-amber-300 font-medium">Growth!</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA -->
+                            <div class="text-center pt-8 border-t border-white/10">
+                                <p class="text-navy-300 mb-5 text-lg">Ready to start your journey to confident English communication?</p>
+                                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                    <a href="#pilot" class="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-navy-900 rounded-2xl font-bold hover:bg-amber-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                        Join the Pilot Program
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                        </svg>
+                                    </a>
+                                    <a href="#solution" class="inline-flex items-center justify-center gap-2 px-6 py-4 bg-white/10 text-white rounded-2xl font-medium hover:bg-white/20 transition-all duration-300 border border-white/20">
+                                        Explore Our Approach
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
